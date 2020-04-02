@@ -3,16 +3,18 @@
 ((() => {
 
   
-  var width = 960;
+  var width = 950;
   var height = 500;
+  var scale = 5500;
 
   var svg = d3.select("#vis-svg")
     .attr("width", width)
     .attr("height", height);
 
-  var projection = d3.geoAlbersUsa()
+  var projection = d3.geoAlbers()
     .translate([width/2, height/2])
-    .scale(width);
+    .center( [24.25, 43] )
+    .scale(scale);
 
   var path = d3.geoPath().projection(projection)
 
@@ -36,6 +38,15 @@
       .attr("d", path)
       .attr( "fill", "#ccc" )
       .attr( "stroke", "#333")
+
+    mapGroup.append("g")
+      .selectAll("path")
+      .data(zips.features)
+      .enter()
+      .append("path")
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", "red")
     
 
   }
