@@ -26,6 +26,23 @@ h1, h2, h3 {
 	flex-wrap: wrap;
 }
 
+/* For when brushing is happening but not completed */
+.zips.selected {
+	fill: #aad1e3;
+}
+
+/* For when brushing is done and a selection is made */
+.zips.final {
+	fill: #377d61;
+}
+
+/* General styling for zips that have a vendor */
+.zips {
+	fill: #374a7d;
+	stroke:#4d4d4d;
+	stroke-width: 1 px;
+}
+
 
 
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */  
