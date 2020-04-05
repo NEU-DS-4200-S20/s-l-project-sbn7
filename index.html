@@ -20,9 +20,6 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="msapplication-config" content="favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  <script src="js/table.js"></script>
-</script>
-
 </head>
 
 <!-- Main page content -->
@@ -63,16 +60,13 @@
     
     <svg id="map-svg"
       preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 950 500">
-    <!-- Don't delete the closing tag! -->
     </svg>
 
-        <svg id="map-svg"
+    <div id ="table-div" 
       preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 950 500">
-    <!-- Don't delete the closing tag! -->
-    </svg>
   </div>
 
-  <div class="table-holder" id="table"></div>
+  </div>
   
   <!-- Your writeup goes here -->
   <div class = "content-column">
@@ -97,9 +91,8 @@
     <p><em>Expectation: Data sources match the problem statement and are appropriate. These descriptions should be very explicit so someone could read your page and properly reproduce your results.</em></p>
 
     <p><em>		The data we are using for our interactive visualization is the Local Food Trade Show Vendor Application Specialty Crops dataset. The dataset has 20 columns, each of which is either a numerical value (ex.: zip code), text (ex.: products sold), or some combination of both (columns wherein a numerical value is specified, no is specified, or n/a). In order to make this data more usable we first indexed the data points (there was no primary key with which we could individually refer to rows by). We also standardized inputs in every column for effective grouping. This meant standardizing the N/A value (it was stored as na, N/A, and n/a in various places) and making any percentage value appear as a whole value, as opposed to a decimal, in the columns needed for our visualization. These columns were as follows: “Approximately what percentage of your products do you currently sell wholesale?”, “Do you have a goal for what percentage of your products you would like to sell wholesale?”, and “How long has your company been in business?”. Editing the zipcode columns was ultimately not necessary as the data was properly standardized. After the data cleaning was complete we converted the excel files into JSONs in the event that we would need them in that format. 
-	</em></p>
-
-
+    </em></p>
+    
     <h1>Task Analysis</h1>
 
     <p><em>Summary of task table.</em></p>
@@ -141,5 +134,6 @@
   <!-- Scripts at the end avoid need for dealing with async, defer, or onload event handlers -->
   <script src="lib/d3.v4/d3.v4.js"></script>
   <script src="js/visualization.js"></script>
+  <script src="js/table.js"></script>
 </body>
 </html>

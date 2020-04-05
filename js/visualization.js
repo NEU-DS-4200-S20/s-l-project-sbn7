@@ -2,6 +2,8 @@
 // variables and prevent 
 ((() => {
 
+  const dispatchString = "selectionUpdated"
+
   // set general variable for the map
   var width = 950;
   var height = 500;
@@ -11,10 +13,6 @@
   var svg = d3.select("#map-svg")
     .attr("width", width)
     .attr("height", height);
-
-  let drawTable = table()
-      .selectionDispatcher(d3.dispatch(dispatchString))
-      ("#table", data);
 
   // make the projection for the map
   var projection = d3.geoAlbers()
@@ -29,10 +27,11 @@
     d3.json("data/zips.geojson", function(zips) {
       d3.csv("data/vendors.csv", function(vendors) {
         drawMap(states, zips, vendors);
-        table(vendors);
+        initialTable(vendors);
       });
     });
   });
+  
 
   // draw the map
   function drawMap(states, zips, vendors) {
@@ -68,6 +67,7 @@
       .attr("d", path)
 
   }
+
   // adds a brush to the map
   var brush = d3.brush()
     .on("start brush", highlight)
@@ -108,5 +108,80 @@
     selection.classed("selected", false)
     selection.classed("final", true)
 
+    d3.csv("data/vendors.csv", function(vendors) {
+
+      let vendors_selc = vendors.filter(function (d) {
+        let vendorZip = d.ZIP;
+        zips_selected = d3.selectAll(".zips.final").data()
+        .map(function (s) { return s.properties.ZCTA5CE10} );
+        let isSelected = zips_selected.includes(vendorZip);
+        return isSelected;
+      });
+
+      drawTable(vendors_selc)
+
+    });
+
   }
+
+  
+  function initialTable(data) {
+
+    console.log("drawing table")
+
+    let table = d3.select("#table-div")
+      .append("table")
+      .classed("my-table", true);
+
+    let tableHeaders = Object.keys(data[0]);
+
+    let thead = table.append('thead');
+
+    thead.append('tr')
+    .selectAll('th')
+    .data(tableHeaders).enter()
+    .append('th')
+    .text(function (column) { return column; })
+
+  }
+
+
+
+  function drawTable(data) {
+
+    console.log("drawing table")
+
+    let table = d3.select("#table-div")
+    .append("table")
+    .classed("my-table", true);
+
+    d3.select("#table-div tbody").remove();
+
+    let tbody = table.append('tbody');
+
+    let tableHeaders = d3.selectAll("th").data()
+
+    console.log(data)
+
+    tbody.selectAll('tr')
+      .data(data)
+      .enter()
+      .append('tr')
+      .selectAll('td')
+      .data(function (row) {
+        return tableHeaders.map(function (column) {
+         return { column: column, value: row[column] };
+        });
+      })
+      .enter()
+      .append('td')
+      .text(function (d) { return d.value; });
+
+/*     d3.selectAll('tr').classed("selected", d => {
+     return selectedData.includes(d)
+    }); */
+  };
+    
+   
+
 })());
