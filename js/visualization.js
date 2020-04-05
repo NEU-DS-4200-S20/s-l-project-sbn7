@@ -177,9 +177,6 @@
       .append('td')
       .text(function (d) { return d.value; });
 
-/*     d3.selectAll('tr').classed("selected", d => {
-     return selectedData.includes(d)
-    }); */
   };
     
    
