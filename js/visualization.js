@@ -12,6 +12,10 @@
     .attr("width", width)
     .attr("height", height);
 
+  let drawTable = table()
+      .selectionDispatcher(d3.dispatch(dispatchString))
+      ("#table", data);
+
   // make the projection for the map
   var projection = d3.geoAlbers()
     .translate([width/2, height/2])
@@ -25,6 +29,7 @@
     d3.json("data/zips.geojson", function(zips) {
       d3.csv("data/vendors.csv", function(vendors) {
         drawMap(states, zips, vendors);
+        table(vendors);
       });
     });
   });
@@ -63,7 +68,6 @@
       .attr("d", path)
 
   }
-
   // adds a brush to the map
   var brush = d3.brush()
     .on("start brush", highlight)
@@ -105,5 +109,4 @@
     selection.classed("final", true)
 
   }
-
 })());
