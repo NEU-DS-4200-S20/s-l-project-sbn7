@@ -9,6 +9,27 @@ h1, h2, h3 {
 	line-height: 1.7
 }
 
+table, th, td {
+	border: 1px solid #ddd;
+	table-layout: fixed;
+  }
+
+table {
+	font-size: 14px;
+	border-collapse: collapse;
+	/* vertical | horizontal */
+	border-spacing: 0 0;
+	text-align: right;
+	margin: 0 auto;
+
+  }
+  
+  th, td {
+	/* vertical | horizontal */
+	padding: 0 8px;
+  }
+  
+
 /* Your text should be in a nice narrow column */
 .content-column {
 	max-width: 650px;
