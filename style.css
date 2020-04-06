@@ -6,7 +6,7 @@ body {
 }
 
 h1, h2, h3 {
-	line-height: 1.2
+	line-height: 1.7
 }
 
 /* Your text should be in a nice narrow column */
@@ -42,8 +42,6 @@ h1, h2, h3 {
 	stroke:#4d4d4d;
 	stroke-width: 1 px;
 }
-
-
 
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */  
 #forkongithub a{
