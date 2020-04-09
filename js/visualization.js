@@ -178,7 +178,76 @@
       .text(function (d) { return d.value; });
 
   };
-    
-   
+  // set the dimensions and margins of the graph
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
+  width = 950 - margin.left - margin.right,
+  height = 500 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#tree-div")
+.append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+// Read data
+d3.csv('data/vendors_old_treemap.csv', function(data) {
+  var myColor = d3.scaleOrdinal().domain(function(d) { return d.Business_Type })
+    .range(d3.schemeSet3);
+  // stratify the data: reformatting for d3.js
+  var root = d3.stratify()
+    .id(function(d) { return d.Index; })   // Name of the entity (column name is name in csv)
+    .parentId(function(d) { return d.Parent; })   // Name of the parent (column name is parent in csv)
+    (data)
+    .sum(function(d) { return +d.Wholesale_Perc })   // Compute the numeric value for each entity
+    .sort(function(a, b) { return b.Wholesale_Perc - a.Wholesale_Perc; });
+  // Then d3.treemap computes the position of each element of the hierarchy
+  // The coordinates are added to the root object above
+  d3.treemap()
+    .size([width, height])
+    .padding(4)
+    (root)
+
+console.log(root.leaves())
+  // use this information to add rectangles:
+  svg
+    .selectAll("rect")
+    .data(root.leaves())
+    .enter()
+    .append("rect")
+      .attr('x', function (d) { return d.x0; })
+      .attr('y', function (d) { return d.y0; })
+      .attr('width', function (d) { return d.x1 - d.x0; })
+      .attr('height', function (d) { return d.y1 - d.y0; })
+      .style("stroke", "black")
+      .style("fill", function(d){return myColor(d) });
+
+  // and to add the text labels
+  svg
+    .selectAll("text")
+    .data(root.leaves())
+    .enter()
+    .append("text")
+    .selectAll("tspan")
+    .data( d => {
+      return d.data.Index.split(/(?=[A-Z][^A-Z])/g) // split the name of movie
+              .map(v => {
+                  return {
+                      text: v,
+                      x0: d.x0,                        // keep x0 reference
+                      y0: d.y0                         // keep y0 reference
+                  }
+              });
+    })
+      .enter()
+      .append('tspan')
+      .attr("x", (d) => d.x0 + 5)
+      .attr("y", (d, i) => d.y0 + 15 + (i * 10))       // offset by index 
+      .text((d) => d.text)
+      .attr("font-size", "0.6em")
+      .attr("fill", "black");
+})
 
 })());
