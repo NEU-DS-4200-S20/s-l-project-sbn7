@@ -5,14 +5,15 @@
   const dispatchString = "selectionUpdated"
 
   // set general variable for the map
-  var width = 950;
+  var width = 400;
   var height = 500;
-  var scale = 5500;
+  var scale = 4500;
 
   // select the map svg
-  var svg = d3.select("#map-svg")
-    .attr("width", width)
-    .attr("height", height);
+  var svg = d3.select("#map-div")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
 
   // make the projection for the map
   var projection = d3.geoAlbers()
@@ -35,6 +36,8 @@
 
   // draw the map
   function drawMap(states, zips, vendors) {
+
+    var svg = d3.select("#map-div").selectAll("g")
 
     var mapGroup = svg.append("g").attr("class", "mapGroup")
 
@@ -65,6 +68,38 @@
       .attr("fill", "none")
       .classed("zips", hasVendor)
       .attr("d", path)
+
+      var legend = svg
+      .append("g")
+      .attr("class", "legend")
+      .attr("width", 140)
+      .attr("height", 200)
+      .selectAll("g")
+      .data([
+        {'color': 'orange', 'label': 'Participating Vendor Zip Codes'}, 
+        {'color': 'orange', 'label': 'Selected Vendor Zip Codes'}, 
+        {'color': 'gray', 'label': 'States'},
+      ])
+      .enter()
+      .append("g")
+      .attr("transform", function(d, i) {
+        return "translate(0," + i * 20 + ")";
+      });
+    
+    legend
+      .append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", function(d) { 
+        return d.color
+      });
+    
+    legend
+      .append("text")
+      .attr("x", 100)
+      .attr("y", 18)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.label });
 
   }
 
@@ -180,7 +215,7 @@
   };
   // set the dimensions and margins of the graph
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 950 - margin.left - margin.right,
+  width = 400 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
