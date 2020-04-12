@@ -10,7 +10,7 @@
   var scale = 4500;
 
   // select the map svg
-  var svg = d3.select("#map-div")
+  var mapsvg = d3.select("#map-div")
   .append("svg")
   .attr("width", width)
   .attr("height", height);
@@ -28,18 +28,22 @@
     d3.json("data/zips.geojson", function(zips) {
       d3.csv("data/vendors.csv", function(vendors) {
         drawMap(states, zips, vendors);
+
         initialTable(vendors);
       });
     });
   });
+
+  d3.csv('data/vendors_old_treemap.csv', function(data) {
+    drawTreeMap(data);
+  });
+
   
 
   // draw the map
   function drawMap(states, zips, vendors) {
 
-    var svg = d3.select("#map-div").selectAll("g")
-
-    var mapGroup = svg.append("g").attr("class", "mapGroup")
+    var mapGroup = mapsvg.append("g").attr("class", "mapGroup")
 
     // draw the states
     mapGroup.append("g")
@@ -69,7 +73,7 @@
       .classed("zips", hasVendor)
       .attr("d", path)
 
-      var legend = svg
+      var legend = mapsvg
       .append("g")
       .attr("class", "legend")
       .attr("width", 140)
@@ -108,7 +112,7 @@
     .on("start brush", highlight)
     .on("end", brushend);
 
-  svg.append("g").call(brush)
+  mapsvg.append("g").call(brush)
 
   // determines what to do when the brush is started
   function highlight() {
@@ -219,7 +223,7 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
   height = 500 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-var svg = d3.select("#tree-div")
+var treesvg = d3.select("#tree-div")
             .append("svg")
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
@@ -228,7 +232,9 @@ var svg = d3.select("#tree-div")
                     "translate(" + margin.left + "," + margin.top + ")");
 
 // Read data
-d3.csv('data/vendors_old_treemap.csv', function(data) {
+
+function drawTreeMap(data) {
+
   var myColor = d3.scaleOrdinal().domain(function(d) { return d.Business_Type })
     .range(d3.schemeSet3);
   // stratify the data: reformatting for d3.js
@@ -255,7 +261,7 @@ function colors(n) {
 }
 
 // use this information to add rectangles:
-  svg
+  treesvg
     .selectAll("rect")
     .data(root.leaves())
     .enter()
@@ -269,7 +275,7 @@ function colors(n) {
       //.style("fill", function(d){return color(d.Business_Type) });
 
   // and to add the text labels
-  svg
+  treesvg
     .selectAll("text")
     .data(root.leaves())
     .enter()
@@ -293,56 +299,65 @@ function colors(n) {
       .attr("font-size", "0.6em")
       .attr("fill", "black");
 
-var treeBrush = d3.brush()
-    .on("start brush", treeHighlight)
-    .on("end", treeBrushEnd);
 
-svg.selectAll('rect').call(treeBrush);
+  }
 
-function treeHighlight() {
-
-    // remove any current selection
-    d3.selectAll("rect").classed("final", false);
-
-    // if nothing is selected don't do anything else
-    if (d3.event.selection == null) {
-      return;
+  var treeBrush = d3.brush()
+  .on("start brush", treeHighlight)
+  .on("end", treeBrushEnd);
+  
+  treesvg.selectAll('rect').call(treeBrush);
+  
+  function treeHighlight() {
+  
+      // remove any current selection
+      d3.selectAll("rect").classed("final", false);
+  
+      // if nothing is selected don't do anything else
+      if (d3.event.selection == null) {
+        return;
+      }
+  
+      // get the bounds of the selection
+      let [[x0, y0], [x1, y1]] = d3.event.selection
+      let all_rect = d3.selectAll("rect")
+  
+      // select the rects within the bounds
+      all_rect.classed("selected",
+        d =>
+          x0 <= d.x0 &&
+          x1 >= d.x0 &&
+          y0 <= d.y0 &&
+          y1 >= d.y0);
     }
 
-    // get the bounds of the selection
-    let [[x0, y0], [x1, y1]] = d3.event.selection
-    let all_rect = d3.selectAll("rect")
 
-    // select the rects within the bounds
-    all_rect.classed("selected",
-      d =>
-        x0 <= d.x0 &&
-        x1 >= d.x0 &&
-        y0 <= d.y0 &&
-        y1 >= d.y0);
-  }
-function treeBrushEnd() {
-
-    let selection = d3.selectAll("rect")
-    selection.classed("selected", false)
-    selection.classed("final", true)
-
-    d3.csv("data/vendors.csv", function(vendors) {
-
-      let vendors_selc = vendors.filter(function (d) {
-      let vendorInd = d.data.Index;
-      indSelected = d3.selectAll("rect").data()
-      .map(function (s) { return s.data.Index} );
-      let isSelected = indSelected.includes(vendorInd);
-      return isSelected;
+  function treeBrushEnd() {
+  
+      let selection = d3.selectAll("rect")
+      selection.classed("selected", false)
+      selection.classed("final", true)
+  
+      d3.csv("data/vendors.csv", function(vendors) {
+  
+        let vendors_selc = vendors.filter(function (d) {
+        let vendorInd = d.data.Index;
+        indSelected = d3.selectAll("rect").data()
+        .map(function (s) { return s.data.Index} );
+        let isSelected = indSelected.includes(vendorInd);
+        return isSelected;
+        });
+      drawTable(vendors_selc)
       });
-    drawTable(vendors_selc)
-    });
-  }
+    }
+  
 
-})
 
-})());
+
+
+  
+  })()); 
+
 
 
 
