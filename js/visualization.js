@@ -5,15 +5,19 @@
   const dispatchString = "selectionUpdated"
 
   // set general variable for the map
-  var width = 400;
-  var height = 500;
-  var scale = 4500;
+  var margin = {top: 10, right: 10, bottom: 10, left: 10},
+  width = 400 - margin.left - margin.right,
+  height = 700 - margin.top - margin.bottom;
+  var scale = 6000;
 
   // select the map svg
   var mapsvg = d3.select("#map-div")
   .append("svg")
-  .attr("width", width)
-  .attr("height", height);
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
 
   // make the projection for the map
   var projection = d3.geoAlbers()
@@ -73,24 +77,39 @@
       .classed("zips", hasVendor)
       .attr("d", path)
 
-      var legend = mapsvg
+      var mapLegend = d3.select("#map-legend")
+        .append("svg") 
+        .attr("width", 300)
+        .attr("height", 100)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+      var legend = mapLegend
       .append("g")
       .attr("class", "legend")
-      .attr("width", 140)
-      .attr("height", 200)
+      .attr("width", 300)
+      .attr("height", 100)
       .selectAll("g")
       .data([
-        {'color': 'orange', 'label': 'Participating Vendor Zip Codes'}, 
-        {'color': 'orange', 'label': 'Selected Vendor Zip Codes'}, 
-        {'color': 'gray', 'label': 'States'},
+        {'color': '#374a7d', 'label': 'Participating Vendor Zip Codes'}, 
+        {'color': '#377d61', 'label': 'Selected Vendor Zip Codes'}, 
+        {'color': '#ccc', 'label': 'States'},
       ])
       .enter()
       .append("g")
       .attr("transform", function(d, i) {
-        return "translate(0," + i * 20 + ")";
+        return "translate(0," + (i * 20 + 20) + ")";
       });
     
-    legend
+      mapLegend.append("text")
+      .attr("x", 5)             
+      .attr("y", 10)
+      .style("font-size", "24px") 
+      .style("text-decoration", "underline")  
+      .text("Map Legend");
+
+      legend
       .append("rect")
       .attr("width", 18)
       .attr("height", 18)
@@ -100,8 +119,8 @@
     
     legend
       .append("text")
-      .attr("x", 100)
-      .attr("y", 18)
+      .attr("x", 24)
+      .attr("y", 9)
       .attr("dy", ".35em")
       .text(function(d) { return d.label });
 
@@ -219,8 +238,8 @@
   };
   // set the dimensions and margins of the graph
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 1200 - margin.left - margin.right,
-  height = 500 - margin.top - margin.bottom;
+  width = 600 - margin.left - margin.right,
+  height = 700 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var treesvg = d3.select("#tree-div")
@@ -234,15 +253,16 @@ var treesvg = d3.select("#tree-div")
 // Read data
 
 function drawTreeMap(data) {
+  var treeGroup = treesvg.append("g").attr("class", "treeGroup")
 
-  var myColor = d3.scaleOrdinal().domain(function(d) { return d.Business_Type })
-    .range(d3.schemeSet3);
+  // var myColor = d3.scaleOrdinal().domain(function(d) { return d.Business_Type })
+  //   .range(d3.schemeSet3);
   // stratify the data: reformatting for d3.js
   var root = d3.stratify()
     .id(function(d) { return d.Index; })   // Name of the entity 
     .parentId(function(d) { return d.Parent; })   // Name of the parent (column name is parent in csv)
     (data)
-    .sum(function(d) { return +d.Wholesale_Perc })   // Compute the numeric value for each entity
+    .sum(function(d) { return +d.Perc_Adj })   // Compute the numeric value for each entity
     .sort(function comparator(a, b) {
       return b.value - a.value;
     })
@@ -255,13 +275,10 @@ function drawTreeMap(data) {
 
 console.log(root.leaves())
 
-function colors(n) {
-  var colors_g = ["pink", "lightblue", "lightgrey", "lightgreen"];
-  return colors_g[n % colors_g.length];
-}
+
 
 // use this information to add rectangles:
-  treesvg
+  treeGroup
     .selectAll("rect")
     .data(root.leaves())
     .enter()
@@ -271,11 +288,15 @@ function colors(n) {
       .attr('width', function (d) { return d.x1 - d.x0; })
       .attr('height', function (d) { return d.y1 - d.y0; })
       .style("stroke", "black")
-      .attr("fill", function(d,i) { return colors(i); } );
-      //.style("fill", function(d){return color(d.Business_Type) });
+      .classed("mass-special", function(d) {
+        return d.data.Business_Type == "Massachusetts Specialty Crop Farm"})
+      .classed("value-added", function(d) {
+        return d.data.Business_Type == "Specialty Crop Value-Added Producer"})
+      .classed("nonmass-special", function(d) {
+        return d.data.Business_Type == "Non-Massachusetts Specialty Crop Farm"});
 
   // and to add the text labels
-  treesvg
+  treeGroup
     .selectAll("text")
     .data(root.leaves())
     .enter()
@@ -299,6 +320,52 @@ function colors(n) {
       .attr("font-size", "0.6em")
       .attr("fill", "black");
 
+      var treeLegend = d3.select("#tree-legend")
+      .append("svg") 
+      .attr("width", 400)
+      .attr("height", 150)
+      .append("g")
+      .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+      var legend = treeLegend
+      .append("g")
+      .attr("class", "legend")
+      .attr("width", 400)
+      .attr("height", 150)
+      .selectAll("g")
+      .data([
+        {'color': 'lightblue', 'label': 'Massachusetts Specialty Crop Farm'}, 
+        {'color': 'lightgoldenrodyellow', 'label': 'Non-Massachusetts Specialty Crop Farm'}, 
+        {'color': 'lightsalmon', 'label': 'Specialty Crop Value-Added Producer'},
+      ])
+      .enter()
+      .append("g")
+      .attr("transform", function(d, i) {
+        return "translate(0," + (i * 20 + 20) + ")";
+      });
+
+      treeLegend.append("text")
+      .attr("x", 5)             
+      .attr("y", 10)
+      .style("font-size", "24px") 
+      .style("text-decoration", "underline")  
+      .text("Treemap Legend");
+    
+      legend
+      .append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", function(d) { 
+        return d.color
+      });
+    
+    legend
+      .append("text")
+      .attr("x", 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.label });
 
   }
 
@@ -306,7 +373,7 @@ function colors(n) {
   .on("start brush", treeHighlight)
   .on("end", treeBrushEnd);
   
-  treesvg.selectAll('rect').call(treeBrush);
+  treesvg.append("g").call(treeBrush);
   
   function treeHighlight() {
   
@@ -351,6 +418,7 @@ function colors(n) {
       });
     }
   
+
 
 
 

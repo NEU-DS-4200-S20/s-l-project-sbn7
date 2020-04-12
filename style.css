@@ -48,11 +48,37 @@ table {
 .vis-holder {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* But your visualization should be full-width and full-height */
+.legend-holder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+  }
+
+.map-div.marks {
+	max-width: 500px;
 }
 
 .vis-svg {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.mass-special {
+	fill: lightblue;
+}
+
+.nonmass-special {
+	fill: lightgoldenrodyellow;
+}
+
+.value-added {
+	fill: lightsalmon;
 }
 
 /* For when brushing is happening but not completed */
