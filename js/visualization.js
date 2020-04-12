@@ -215,17 +215,17 @@
   };
   // set the dimensions and margins of the graph
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-  width = 400 - margin.left - margin.right,
+  width = 1200 - margin.left - margin.right,
   height = 500 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#tree-div")
-.append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-.append("g")
-  .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+            .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
 // Read data
 d3.csv('data/vendors_old_treemap.csv', function(data) {
@@ -233,11 +233,13 @@ d3.csv('data/vendors_old_treemap.csv', function(data) {
     .range(d3.schemeSet3);
   // stratify the data: reformatting for d3.js
   var root = d3.stratify()
-    .id(function(d) { return d.Index; })   // Name of the entity (column name is name in csv)
+    .id(function(d) { return d.Index; })   // Name of the entity 
     .parentId(function(d) { return d.Parent; })   // Name of the parent (column name is parent in csv)
     (data)
     .sum(function(d) { return +d.Wholesale_Perc })   // Compute the numeric value for each entity
-    .sort(function(a, b) { return b.Wholesale_Perc - a.Wholesale_Perc; });
+    .sort(function comparator(a, b) {
+      return b.value - a.value;
+    })
   // Then d3.treemap computes the position of each element of the hierarchy
   // The coordinates are added to the root object above
   d3.treemap()
@@ -246,7 +248,13 @@ d3.csv('data/vendors_old_treemap.csv', function(data) {
     (root)
 
 console.log(root.leaves())
-  // use this information to add rectangles:
+
+function colors(n) {
+  var colors_g = ["pink", "lightblue", "lightgrey", "lightgreen"];
+  return colors_g[n % colors_g.length];
+}
+
+// use this information to add rectangles:
   svg
     .selectAll("rect")
     .data(root.leaves())
@@ -257,7 +265,8 @@ console.log(root.leaves())
       .attr('width', function (d) { return d.x1 - d.x0; })
       .attr('height', function (d) { return d.y1 - d.y0; })
       .style("stroke", "black")
-      .style("fill", function(d){return myColor(d) });
+      .attr("fill", function(d,i) { return colors(i); } );
+      //.style("fill", function(d){return color(d.Business_Type) });
 
   // and to add the text labels
   svg
@@ -267,7 +276,7 @@ console.log(root.leaves())
     .append("text")
     .selectAll("tspan")
     .data( d => {
-      return d.data.Index.split(/(?=[A-Z][^A-Z])/g) // split the name of movie
+      return d.data.Index.split(/(?=[A-Z][^A-Z])/g)
               .map(v => {
                   return {
                       text: v,
@@ -283,6 +292,57 @@ console.log(root.leaves())
       .text((d) => d.text)
       .attr("font-size", "0.6em")
       .attr("fill", "black");
+
+var treeBrush = d3.brush()
+    .on("start brush", treeHighlight)
+    .on("end", treeBrushEnd);
+
+svg.selectAll('rect').call(treeBrush);
+
+function treeHighlight() {
+
+    // remove any current selection
+    d3.selectAll("rect").classed("final", false);
+
+    // if nothing is selected don't do anything else
+    if (d3.event.selection == null) {
+      return;
+    }
+
+    // get the bounds of the selection
+    let [[x0, y0], [x1, y1]] = d3.event.selection
+    let all_rect = d3.selectAll("rect")
+
+    // select the rects within the bounds
+    all_rect.classed("selected",
+      d =>
+        x0 <= d.x0 &&
+        x1 >= d.x0 &&
+        y0 <= d.y0 &&
+        y1 >= d.y0);
+  }
+function treeBrushEnd() {
+
+    let selection = d3.selectAll("rect")
+    selection.classed("selected", false)
+    selection.classed("final", true)
+
+    d3.csv("data/vendors.csv", function(vendors) {
+
+      let vendors_selc = vendors.filter(function (d) {
+      let vendorInd = d.data.Index;
+      indSelected = d3.selectAll("rect").data()
+      .map(function (s) { return s.data.Index} );
+      let isSelected = indSelected.includes(vendorInd);
+      return isSelected;
+      });
+    drawTable(vendors_selc)
+    });
+  }
+
 })
 
 })());
+
+
+

@@ -9,6 +9,14 @@ h1, h2, h3 {
 	line-height: 1.7
 }
 
+div#tooltip {
+   background: #FFF;
+   pointer-events: none; // important
+   padding: 4px;
+   border: 1px solid #CCC;
+   border-radius: 3px;
+}
+
 table, th, td {
 	border: 1px solid #ddd;
 	table-layout: fixed;
