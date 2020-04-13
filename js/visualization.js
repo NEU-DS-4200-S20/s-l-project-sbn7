@@ -156,6 +156,8 @@
         y0 <= projection([d.properties.lon, d.properties.lat])[1] &&
         y1 >= projection([d.properties.lon, d.properties.lat])[1]
     );
+
+    selectVendors()
   }
 
   // determines what to do when the brush ends
@@ -164,6 +166,10 @@
     // get all the zips current selected and make it a final selection
     let selection = d3.selectAll(".zips.selected")
     selection.classed("selected", false)
+    selection.classed("final", true)
+
+    let tree_selection = d3.selectAll("rect.selected")
+    tree_selection.classed("selected", false)
     selection.classed("final", true)
 
     d3.csv("data/vendors.csv", function(vendors) {
@@ -182,10 +188,25 @@
 
   }
 
+  function selectVendors() {
+    zips_selected = d3.selectAll(".zips.selected").data()
+    .map(function (s) { return s.properties.ZCTA5CE10} );
+
+    d3.selectAll("rect.vendor")
+    .classed("selected", function (v) {
+      if(zips_selected.includes(v.data.ZIP)) {
+       return true
+      } else {
+        return false
+      }
+    });
+   
+
+
+  }
+
   
   function initialTable(data) {
-
-    console.log("drawing table")
 
     let table = d3.select("#table-div")
       .append("table")
@@ -207,8 +228,6 @@
 
   function drawTable(data) {
 
-    console.log("drawing table")
-
     let table = d3.select("#table-div")
     .append("table")
     .classed("my-table", true);
@@ -218,8 +237,6 @@
     let tbody = table.append('tbody');
 
     let tableHeaders = d3.selectAll("th").data()
-
-    console.log(data)
 
     tbody.selectAll('tr')
       .data(data)
@@ -273,7 +290,6 @@ function drawTreeMap(data) {
     .padding(4)
     (root)
 
-console.log(root.leaves())
 
 
 
@@ -288,12 +304,15 @@ console.log(root.leaves())
       .attr('width', function (d) { return d.x1 - d.x0; })
       .attr('height', function (d) { return d.y1 - d.y0; })
       .style("stroke", "black")
+      .classed("vendor", true)
       .classed("mass-special", function(d) {
         return d.data.Business_Type == "Massachusetts Specialty Crop Farm"})
       .classed("value-added", function(d) {
         return d.data.Business_Type == "Specialty Crop Value-Added Producer"})
       .classed("nonmass-special", function(d) {
         return d.data.Business_Type == "Non-Massachusetts Specialty Crop Farm"});
+
+
 
   // and to add the text labels
   treeGroup
@@ -319,6 +338,7 @@ console.log(root.leaves())
       .text((d) => d.text)
       .attr("font-size", "0.6em")
       .attr("fill", "black");
+
 
       var treeLegend = d3.select("#tree-legend")
       .append("svg") 
@@ -387,7 +407,7 @@ console.log(root.leaves())
   
       // get the bounds of the selection
       let [[x0, y0], [x1, y1]] = d3.event.selection
-      let all_rect = d3.selectAll("rect")
+      let all_rect = d3.selectAll("rect.vendor")
   
       // select the rects within the bounds
       all_rect.classed("selected",
@@ -396,29 +416,48 @@ console.log(root.leaves())
           x1 >= d.x0 &&
           y0 <= d.y0 &&
           y1 >= d.y0);
+
+        selectZips()
+    
     }
 
 
   function treeBrushEnd() {
   
-      let selection = d3.selectAll("rect")
+      let selection = d3.selectAll("rect.vendor.selected")
       selection.classed("selected", false)
       selection.classed("final", true)
+
+      let zip_selection = d3.selectAll(".zips.selected")
+      zip_selection.classed("selected", false)
+      zip_selection.classed("final", true)
   
       d3.csv("data/vendors.csv", function(vendors) {
-  
-        let vendors_selc = vendors.filter(function (d) {
-        let vendorInd = d.data.Index;
-        indSelected = d3.selectAll("rect").data()
-        .map(function (s) { return s.data.Index} );
-        let isSelected = indSelected.includes(vendorInd);
+      let vendors_selc = vendors.filter(function (d) {
+        let vendorZip = d.ZIP;
+        zips_selected = d3.selectAll(".zips.final").data()
+        .map(function (s) { return s.properties.ZCTA5CE10} );
+        let isSelected = zips_selected.includes(vendorZip);
         return isSelected;
-        });
+      });
+
       drawTable(vendors_selc)
       });
     }
   
 
+    function selectZips() {
+      vendor_zips = d3.selectAll("rect.vendor.selected").data().map(function (s) { return s.data.ZIP} );
+
+      let all_zips = d3.selectAll(".zips")
+
+    // select the zips within the bounds
+    all_zips.classed("selected", function(z) {
+      return vendor_zips.includes(z.properties.ZCTA5CE10)
+    });
+
+      console.log(vendor_zips)
+    }
 
 
 

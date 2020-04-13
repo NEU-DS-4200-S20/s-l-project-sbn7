@@ -69,16 +69,36 @@ table {
 	flex-wrap: wrap;
 }
 
-.mass-special {
+.vendor.mass-special {
 	fill: lightblue;
 }
 
-.nonmass-special {
+.vendor.mass-special.final {
+	fill: slateblue;
+	stroke: black;
+}
+
+.vendor.nonmass-special {
 	fill: lightgoldenrodyellow;
 }
 
-.value-added {
+.vendor.nonmass-special.final {
+	fill: goldenrod;
+	stroke: black
+}
+
+
+.vendor.value-added {
 	fill: lightsalmon;
+}
+
+.vendor.value-added.final {
+	fill: salmon;
+	stroke: black
+}
+
+.vendor.selected {
+	fill: #dbdbdb;
 }
 
 /* For when brushing is happening but not completed */
