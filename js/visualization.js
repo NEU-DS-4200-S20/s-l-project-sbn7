@@ -139,6 +139,7 @@
 
     // remove any current selection
     d3.selectAll(".zips.final").classed("final", false);
+    d3.selectAll("rect.final").classed("final", false);
 
     // if nothing is selected don't do anything else
     if (d3.event.selection == null) {
@@ -179,12 +180,12 @@
 
   function redrawTable() {
     d3.csv("data/vendors.csv", function(vendors) {
-
+ 
       let vendors_selc = vendors.filter(function (d) {
-        let vendorZip = d.ZIP;
-        zips_selected = d3.selectAll(".zips.final").data()
-        .map(function (s) { return s.properties.ZCTA5CE10} );
-        let isSelected = zips_selected.includes(vendorZip);
+        let vendorIndex = d.Index;
+        zips_selected = d3.selectAll("rect.final").data()
+        .map(function (s) {return s.id} );
+        let isSelected = zips_selected.includes(vendorIndex);
         return isSelected;
       });
 
@@ -311,12 +312,14 @@ function drawTreeMap(data) {
       .attr('height', function (d) { return d.y1 - d.y0; })
       .style("stroke", "black")
       .classed("vendor", true)
-      .classed("mass-special", function(d) {
-        return d.data.Business_Type == "Massachusetts Specialty Crop Farm"})
-      .classed("value-added", function(d) {
-        return d.data.Business_Type == "Specialty Crop Value-Added Producer"})
-      .classed("nonmass-special", function(d) {
-        return d.data.Business_Type == "Non-Massachusetts Specialty Crop Farm"});
+      .classed("herbs", function(d) {
+        return d.data.Category == "Herbs/Plants"})
+      .classed("mushrooms", function(d) {
+        return d.data.Category == "Mushrooms"})
+      .classed("other", function(d) {
+        return d.data.Category == "Other"})
+      .classed("vegetables", function(d) {
+        return d.data.Category == "Vegetables"});
 
 
 
@@ -361,9 +364,10 @@ function drawTreeMap(data) {
       .attr("height", 150)
       .selectAll("g")
       .data([
-        {'color': 'lightblue', 'label': 'Massachusetts Specialty Crop Farm'}, 
-        {'color': 'lightgoldenrodyellow', 'label': 'Non-Massachusetts Specialty Crop Farm'}, 
-        {'color': 'lightsalmon', 'label': 'Specialty Crop Value-Added Producer'},
+        {'color': '#c2a486', 'label': 'Mushrooms'}, 
+        {'color': '#84bf93', 'label': 'Vegetables'}, 
+        {'color': '#84b1bf', 'label': 'Herbs/Plants'},
+        {'color': '#947bb8', 'label': 'Other'},
       ])
       .enter()
       .append("g")
@@ -405,6 +409,7 @@ function drawTreeMap(data) {
   
       // remove any current selection
       d3.selectAll("rect").classed("final", false);
+      d3.selectAll(".zips.final").classed("final", false);
   
       // if nothing is selected don't do anything else
       if (d3.event.selection == null) {
@@ -419,9 +424,9 @@ function drawTreeMap(data) {
       all_rect.classed("selected",
         d =>
           x0 <= d.x0 &&
-          x1 >= d.x0 &&
+          x1 >= d.x1 &&
           y0 <= d.y0 &&
-          y1 >= d.y0);
+          y1 >= d.y1);
 
         selectZips()
     
@@ -447,12 +452,11 @@ function drawTreeMap(data) {
 
       let all_zips = d3.selectAll(".zips")
 
-    // select the zips within the bounds
-    all_zips.classed("selected", function(z) {
-      return vendor_zips.includes(z.properties.ZCTA5CE10)
-    });
+      // select the zips within the bounds
+      all_zips.classed("selected", function(z) {
+        return vendor_zips.includes(z.properties.ZCTA5CE10)
+      });
 
-      console.log(vendor_zips)
     }
 
 

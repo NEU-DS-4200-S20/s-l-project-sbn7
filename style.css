@@ -69,34 +69,37 @@ table {
 	flex-wrap: wrap;
 }
 
-.vendor.mass-special {
-	fill: lightblue;
+.vendor.herbs {
+	fill: #84b1bf;
 }
 
-.vendor.mass-special.final {
-	fill: slateblue;
-	stroke: black;
+.vendor.herbs.final {
+	fill: #638691;
 }
 
-.vendor.nonmass-special {
-	fill: lightgoldenrodyellow;
+.vendor.mushrooms{
+	fill: #c2a486;
 }
 
-.vendor.nonmass-special.final {
-	fill: goldenrod;
-	stroke: black
+.vendor.mushrooms.final {
+	fill: #917a63;
 }
 
 
-.vendor.value-added {
-	fill: lightsalmon;
+.vendor.vegetables {
+	fill: #84bf93;
 }
 
-.vendor.value-added.final {
-	fill: salmon;
-	stroke: black
+.vendor.vegetables.final {
+	fill: #51785b;
+}
+.vendor.other {
+	fill: #947bb8;
 }
 
+.vendor.other.final {
+	fill: #615178;
+}
 .vendor.selected {
 	fill: #dbdbdb;
 }

@@ -1,36 +1,36 @@
-Index,Parent,Business_Type,Wholesale_Perc,Perc_Adj,ZIP
+Index,Parent,Category,Wholesale_Perc,Perc_Adj,ZIP
 Origin,,,,,
-1,Origin,Non-Massachusetts Specialty Crop Farm,20,30,02806
-2,Origin,Specialty Crop Value-Added Producer,25,35,02021
-3,Origin,Massachusetts Specialty Crop Farm,75,85,02703
-4,Origin,Specialty Crop Value-Added Producer,90,100,01301
-5,Origin,Massachusetts Specialty Crop Farm,0,10,02568
-6,Origin,Massachusetts Specialty Crop Farm,0,10,01035
-7,Origin,Specialty Crop Value-Added Producer,99,109,02760
-8,Origin,Massachusetts Specialty Crop Farm,35,45,01351
-9,Origin,Specialty Crop Value-Added Producer,95,105,03281
-10,Origin,Specialty Crop Value-Added Producer,70,80,02909
-11,Origin,Specialty Crop Value-Added Producer,0,10,02114
-12,Origin,Massachusetts Specialty Crop Farm,0,10,02054
-13,Origin,Specialty Crop Value-Added Producer,30,40,05701
-14,Origin,Massachusetts Specialty Crop Farm,50,60,01373
-15,Origin,Massachusetts Specialty Crop Farm,90,100,01844
-16,Origin,Massachusetts Specialty Crop Farm,20,30,01523
-17,Origin,Massachusetts Specialty Crop Farm,25,35,02118
-18,Origin,Massachusetts Specialty Crop Farm,25,35,02131
-19,Origin,Massachusetts Specialty Crop Farm,100,110,01375
-20,Origin,Massachusetts Specialty Crop Farm,50,60,01754
-21,Origin,Massachusetts Specialty Crop Farm,50,60,01921
-22,Origin,Massachusetts Specialty Crop Farm,70,80,01342
-23,Origin,Specialty Crop Value-Added Producer,80,90,02494
-24,Origin,Massachusetts Specialty Crop Farm,45,55,02917
-25,Origin,Massachusetts Specialty Crop Farm,95,105,01035
-26,Origin,Massachusetts Specialty Crop Farm,100,110,01886
-27,Origin,Massachusetts Specialty Crop Farm,15,25,01002
-28,Origin,Massachusetts Specialty Crop Farm,10,20,01852
-29,Origin,Specialty Crop Value-Added Producer,40,50,01915
-30,Origin,Massachusetts Specialty Crop Farm,0,10,02715
-31,Origin,Massachusetts Specialty Crop Farm,0.5,10.5,02130
-32,Origin,Massachusetts Specialty Crop Farm,0,10,01921
-33,Origin,Specialty Crop Value-Added Producer,0,10,02126
-34,Origin,Massachusetts Specialty Crop Farm,30,40,01035
+1,Origin,Herbs/Plants,20,30,02806
+2,Origin,Herbs/Plants,25,35,02021
+3,Origin,Vegetables,75,85,02703
+4,Origin,Vegetables,90,100,01301
+5,Origin,Mushrooms,0,10,02568
+6,Origin,Mushrooms,0,10,01035
+7,Origin,Herbs/Plants,99,109,02760
+8,Origin,Vegetables,35,45,01351
+9,Origin,Vegetables,95,105,03281
+10,Origin,Other,70,80,02909
+11,Origin,Other,0,10,02114
+12,Origin,Vegetables,0,10,02054
+13,Origin,Other,30,40,05701
+14,Origin,Mushrooms,50,60,01373
+15,Origin,Vegetables,90,100,01844
+16,Origin,Vegetables,20,30,01523
+17,Origin,Vegetables,25,35,02118
+18,Origin,Vegetables,25,35,02131
+19,Origin,Vegetables,100,110,01375
+20,Origin,Vegetables,50,60,01754
+21,Origin,Herbs/Plants,50,60,01921
+22,Origin,Vegetables,70,80,01342
+23,Origin,Other,80,90,02494
+24,Origin,Herbs/Plants,45,55,02917
+25,Origin,Vegetables,95,105,01035
+26,Origin,Mushrooms,100,110,01886
+27,Origin,Herbs/Plants,15,25,01002
+28,Origin,Other,10,20,01852
+29,Origin,Other,40,50,01915
+30,Origin,Vegetables,0,10,02715
+31,Origin,Other,0.5,10.5,02130
+32,Origin,Other,0,10,01921
+33,Origin,Vegetables,0,10,02126
+34,Origin,Vegetables,30,40,01035
