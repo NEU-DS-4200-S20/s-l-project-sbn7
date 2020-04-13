@@ -13,6 +13,7 @@
   // select the map svg
   var mapsvg = d3.select("#map-div")
   .append("svg")
+  .classed("map-svg", true)
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
 .append("g")
@@ -131,7 +132,7 @@
     .on("start brush", highlight)
     .on("end", brushend);
 
-  mapsvg.append("g").call(brush)
+  d3.selectAll(".map-svg").append("g").call(brush)
 
   // determines what to do when the brush is started
   function highlight() {
@@ -170,8 +171,13 @@
 
     let tree_selection = d3.selectAll("rect.selected")
     tree_selection.classed("selected", false)
-    selection.classed("final", true)
+    tree_selection.classed("final", true)
 
+    redrawTable()
+
+  }
+
+  function redrawTable() {
     d3.csv("data/vendors.csv", function(vendors) {
 
       let vendors_selc = vendors.filter(function (d) {
@@ -185,7 +191,6 @@
       drawTable(vendors_selc)
 
     });
-
   }
 
   function selectVendors() {
@@ -261,6 +266,7 @@ var margin = {top: 10, right: 10, bottom: 10, left: 10},
 // append the svg object to the body of the page
 var treesvg = d3.select("#tree-div")
             .append("svg")
+            .classed("tree-svg", true)
               .attr("width", width + margin.left + margin.right)
               .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -393,7 +399,7 @@ function drawTreeMap(data) {
   .on("start brush", treeHighlight)
   .on("end", treeBrushEnd);
   
-  treesvg.append("g").call(treeBrush);
+  d3.selectAll(".tree-svg").append("g").call(treeBrush);
   
   function treeHighlight() {
   
@@ -432,17 +438,7 @@ function drawTreeMap(data) {
       zip_selection.classed("selected", false)
       zip_selection.classed("final", true)
   
-      d3.csv("data/vendors.csv", function(vendors) {
-      let vendors_selc = vendors.filter(function (d) {
-        let vendorZip = d.ZIP;
-        zips_selected = d3.selectAll(".zips.final").data()
-        .map(function (s) { return s.properties.ZCTA5CE10} );
-        let isSelected = zips_selected.includes(vendorZip);
-        return isSelected;
-      });
-
-      drawTable(vendors_selc)
-      });
+      redrawTable()
     }
   
 
