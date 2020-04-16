@@ -108,17 +108,17 @@ table {
 
 /* For when brushing is happening but not completed */
 .zips.selected {
-	fill: #aad1e3;
+	fill: #949494;
 }
 
 /* For when brushing is done and a selection is made */
 .zips.final {
-	fill: #377d61;
+	fill: #a6d854;
 }
 
 /* General styling for zips that have a vendor */
 .zips {
-	fill: #374a7d;
+	fill: #fc8d62;
 	stroke:#4d4d4d;
 	stroke-width: 1 px;
 }

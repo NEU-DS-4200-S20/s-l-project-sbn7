@@ -52,7 +52,7 @@
       .enter()
       .append("path")
       .attr("d", path)
-      .attr( "fill", "#ccc" )
+      .attr( "fill", "#e3e3e3" )
       .attr( "stroke", "#333")
 
     // determines if the given zip code has a vendor in it
@@ -88,9 +88,9 @@
      .attr("height", 100)
      .selectAll("g")
      .data([
-        {'color': '#374a7d', 'label': 'Participating Vendor Zip Codes'}, 
-        {'color': '#377d61', 'label': 'Selected Vendor Zip Codes'}, 
-        {'color': '#ccc', 'label': 'States'},
+        {'color': '#fc8d62', 'label': 'Participating Vendor Zip Codes'}, 
+        {'color': '#a6d854', 'label': 'Selected Vendor Zip Codes'}, 
+        {'color': '#e3e3e3', 'label': 'States'},
       ])
      .enter()
      .append("g")
