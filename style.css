@@ -74,7 +74,7 @@ table {
 }
 
 .vendor.herbs.final {
-	fill: #638691;
+	fill: #445d64;
 }
 
 .vendor.mushrooms{
@@ -82,7 +82,8 @@ table {
 }
 
 .vendor.mushrooms.final {
-	fill: #917a63;
+	fill: #74614e;
+
 }
 
 
@@ -91,14 +92,15 @@ table {
 }
 
 .vendor.vegetables.final {
-	fill: #51785b;
+	fill: #3a5741;
+	stroke: white;
 }
 .vendor.other {
 	fill: #947bb8;
 }
 
 .vendor.other.final {
-	fill: #615178;
+	fill: #433853;
 }
 .vendor.selected {
 	fill: #dbdbdb;
@@ -120,6 +122,18 @@ table {
 	stroke:#4d4d4d;
 	stroke-width: 1 px;
 }
+
+.my-table td {
+	white-space: wrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-align: right;
+}
+
+.my-table tr {
+	text-align: center;
+}
+
 
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */  
 #forkongithub a{
