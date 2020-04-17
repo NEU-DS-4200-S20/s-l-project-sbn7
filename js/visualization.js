@@ -422,7 +422,3 @@ function drawTreeMap(data) {
     }
 
   })()); 
-
-
-
-

@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   
   <!-- Title -->
-  <title>Project Sustainable Business Network 7: Mapping Trade Show Vendors, DS 4200 S20</title>
+  <title>Sustainable Business Network 7: Mapping Trade Show Vendors, DS 4200 S20</title>
   
   <!-- CSS Styling -->
   <link rel="stylesheet" href="style.css">
@@ -44,15 +44,13 @@
       This visualization will help buyers better understand the types of vendors that typically attend the show and where the vendors come from.
       By making this data more accessible, buyers will be more inclined to attend the show.</em></p>
     
-    <p><em>Expectation: There is a clear focus, and a developed explanation of the problem, and a reasonable response is proposed.</em></p>
-
     
     <h1>Visualization</h1>
     
   </div>
 
   <!-- Your visualization here -->
-  <div class="vis-holder">
+  <div class="vis-holder" >
     <!-- Change viewbox to whatever you want, e.g. "0 0 1000 6000" This determines your aspect ratio and coordinate system -->    
     <!-- Delete all the sample SVG code below after the viewbox to before the closing tag. Populate this part of the SVG with D3. -->
 
@@ -64,22 +62,21 @@
     preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 400 500" style="width:60%">
     </div>
 
-  </div>
-
-  <div class="legend-holder">
     <div id="map-legend"
-    preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 400 500" style="width:40%">
+    preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 950 500" style="width:40%">
     </div>
 
     <div id="tree-legend" 
-    preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 400 500" style="width:60%">
+    preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 950 500" style="width:60%">
     </div>
-  </div>
 
-  <div id ="table-div" 
+    <div id ="table-div" 
     style="color:#374a7d;font-size:15px;border: 1px solid black;"
     preserveAspectRatio="xMidYMid meet" class="marks" viewBox="0 0 950 500">
+   </div>
+
   </div>
+
 
 
   
@@ -92,21 +89,39 @@
 
     <h1>Visualization explanation</h1>
     
-    <p><em>Final visualization screenshots (PNG images), design justifications, UI walk-through, and linked presentation slides.</em></p>
+    <p><em>Our final visualization has three elements: a map of the trade show vendors, a treemap of vendors by category, and a table containing more details.</em></p>
+
+    <figure>
+      <img src="images/map_screenshot.png" alt = "map" class = "centerimg">
+    
+      <figcaption>Screenshot of map with brushing.</figcaption>
+    </figure>
+
+    <p><em>The map shows the vendors’ locations by zip code. This is helpful for understanding general trends about where the vendors attending the trade show are from. If businesses are interested in working with vendors from a certain region, this map would be a good way to identify them. The user can brush over the map in order to select vendor zips codes to see more information about the vendors in the table. The map was designed to be very simple in order to highlight the zip code information. The colors chosen contrast each other so that the selection can be easily seen.</em></p>
+    
+    <figure>
+      <img src="images/treemap_screenshot.png" alt = "treemap" class = "centerimg">
+    
+      <figcaption>Screenshot of treemap with brushing.</figcaption>
+    </figure>
+
+    <p><em>The treemap shows the vendors by category, with the size of the square referencing percentage of their products that they sell wholesale. Like the map, the treemap can be brushed over so that more information about certain vendors can be seen in the table. Any brushing on the treemap or map is reflected by the other one also being highlighted accordingly. The treemap colors reflect the category of the goods they represent.</em></p>
+    
+    <figure>
+      <img src="images/table_screenshot.png" alt = "table" class = "center">
+    
+      <figcaption>Screenshot of sample table.</figcaption>
+    </figure>
+
+
+    <p><em>The table shows a large variety of information about the vendors that potential buyers might find interesting. This is intended to provide a deeper understanding of what types of products will be offered and what the vendors goals are for selling their goods.</em></p>
 
     <h1>Data Analysis</h1>
-    <p><em>Summary of data, data types, and data preprocessing.</em></p>
-
-    <p><em>Expectation: Data sources match the problem statement and are appropriate. These descriptions should be very explicit so someone could read your page and properly reproduce your results.</em></p>
 
     <p><em>		The data we are using for our interactive visualization is the Local Food Trade Show Vendor Application Specialty Crops dataset. The dataset has 20 columns, each of which is either a numerical value (ex.: zip code), text (ex.: products sold), or some combination of both (columns wherein a numerical value is specified, no is specified, or n/a). In order to make this data more usable we first indexed the data points (there was no primary key with which we could individually refer to rows by). We also standardized inputs in every column for effective grouping. This meant standardizing the N/A value (it was stored as na, N/A, and n/a in various places) and making any percentage value appear as a whole value, as opposed to a decimal, in the columns needed for our visualization. These columns were as follows: “Approximately what percentage of your products do you currently sell wholesale?”, “Do you have a goal for what percentage of your products you would like to sell wholesale?”, and “How long has your company been in business?”. Editing the zipcode columns was ultimately not necessary as the data was properly standardized. After the data cleaning was complete we converted the excel files into JSONs in the event that we would need them in that format. 
     </em></p>
     
     <h1>Task Analysis</h1>
-
-    <p><em>Summary of task table.</em></p>
-
-    <p><em>Expectation: Clearly describes domain tasks, processes, goals and abstract tasks for domain problems.</em></p>
 
     <table style="width:100%">
       <tr>
@@ -140,13 +155,10 @@
         <td>Present</td>
       </tr>
     </table>
+
     <h1>Design Process</h1>
     
-    <p><em>Sketches and design choices to justify final visualization.</em></p>
-
-    <p><em>Expectation: Evidence of iterative improvement.
-    Logical discussion of design choices grounded in theory from course.
-    Discusses feedback from usability testing.</em></p>
+    <p><em>Embedded below are the google docs depicting our design process.</em></p>
 
     <iframe src="https://docs.google.com/document/d/e/2PACX-1vQXSHklJCarHais4lvDGIYtbnXGOIQmY_XOfvFH1wTIe5xppszyuKH7eVYHe5knEtqRU67dD6ZR3cbN/pub?embedded=true"></iframe>
 
@@ -156,19 +168,18 @@
 
     <h1>Conclusion</h1>
 
-    <p><em>Short summary of work completed and areas for improvement/future-work.</em></p>
-    
-    <p><em>Expectation: Meaningfully wraps up project and has good future directions.</em></p>
+    <p><em>The visualization produced by this project gives an overview of the vendors that attended the Sustainable Business Network of Massachusetts’ trade show in 2019. The user is able to interact with both the map and the treemap in order to learn more about specific vendors that they may be interested in. This dataset focuses on specialty vendors, but in the future something similar could be made to include all vendors. This type of visualization would work well on SBN’s website as a way to introduce the different vendors available and entice buyers to attend the show.</em></p>
 
-    
+
     <h1>Acknowledgments</h1>
-
-    <p><em>List here where any code, packages/libraries, text, images, designs, etc. that you leverage come from.</em></p>
     
     <ul>
       <li><a href="https://d3js.org/">D3: Data-Driven Documents</a> by Mike Bostock.</li>
       <li><a href="https://codepo8.github.io/css-fork-on-github-ribbon/#">Pure CSS responsive "Fork me on GitHub" ribbon</a> by Chris Heilmann.</li>
+      <li><a href="https://observablehq.com/@d3/treemap">Treemap</a> by Mike Bostock.</li>
+      <li><a href="https://github.com/NEU-DS-4200-S20-Staff/in-class-programming-d3-tutorial">In-Class Programming: D3 Map Brushing and Linking Tutorial</a> by Dylan Cashman and Aditeya Pandey</li>
     </ul>
+
     
   </div>
   
